@@ -1,0 +1,48 @@
+i) select distinct job from emp;
+ii) select * from emp order by deptno asc, job desc;
+iii) select job from emp order by job desc;
+iv) select * from emp where hiredate < ’01/01/1981’;
+v) select * from emp order by sal desc;
+vi) select mgr from emp where empno=’7369’;
+vii) select * from emp where comm > sal;
+viii) select * from emp where job = ‘clerk’ or job = ‘analyst’ order by empno desc;
+ix) select * from emp where sal>22000 and sal<45000;
+x) select ename from emp where ename like ’S%’ and length(ename) = 5;
+xi) select * from emp where empno not like ’78%’;
+xii) select * from emp where job = ‘clerk’ and deptno = ’20’;
+xiii)select * from emp w, emp m where w.mgr = m.empno and w.hiredate < m.hiredate;
+xiv)select * from emp e, dept d where d.deptno=20 and e.deptno = d.deptno and e.job in (select e.job from emp,dept d where e.deptno=d.deptno and d.deptno=10);
+xv) select * from emp where sal in ( select sal from emp where( ename=‘Smith’ or ename-‘ford’)) order by sal desc;
+xvi) SELECT * FROM emp WHERE Job in (SELECT Job FROM emp WHERE (Ename = 'SMITH' or Ename = 'ALLEN'))
+xvii)SELECT * FROM emp WHERE Deptno = 10 and job NOT IN (SELECT job FROM emp WHERE Deptno = 20 )
+xviii) select max(sal) from emp;
+xix)select * from emp where sal in (select max(sal) from emp) 
+xx)SELECT SUM(Sal) from emp WHERE job = 'MANAGER'
+xxi) select * from emp where ename=‘%A%’;
+xxii)SELECT * from emp WHERE Sal IN(SELECT MIN(Sal) FROM emp GROUP by Job) ORDER BY Sal ASC
+xxiii) select * from emp where sal > (select sal from emp where ename=‘Blake’);
+xxiv) reate view myview as SELECT emp.Ename, emp.Job, emp.Deptno, dept.DeptNo,dept.LOC from emp,dept WHERE emp.Deptno = dept.DeptNo
+xxv) DELIMITER //
+
+CREATE PROCEDURE selectdata(INOUT Mydeptno int)
+
+BEGIN
+
+SELECT emp.Ename,dept.Dname FROM emp,dept WHERE emp.Deptno = Mydeptno;
+
+END //
+xxvi) alter table student add pin bigint(8);
+xxvii)ALTER TABLE student MODIFY COLUMN Sname VARCHAR(40)
+xxviii) DELIMITER
+$$
+
+CREATE TRIGGER before_salary_update BEFORE UPDATE ON
+emp FOR EACH ROW
+BEGIN
+INSERT INTO emp_log
+SET Action 	= 'New Salary',
+New_Salary	= new.Sal,
+Emp_id		= old.Empno;
+
+END
+$$
